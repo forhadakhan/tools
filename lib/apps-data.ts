@@ -5,7 +5,7 @@ import * as to from "@/lib/routes";
 export const AppLinks: AppLinkProps[] = [
     { id: 'qr-code', href: to.QR_ROUTE, icon: "QrCodeIcon", label: "QR Code" },
     { id: 'text-editor', href: to.TEXT_EDITOR_ROUTE, icon: "FilePenLineIcon", label: "Text Editor" },
-    { id: 'markdown-previewer', href: to.MARKDOWN_PREVIEWER_ROUTE, icon: "Columns2Icon", label: "Markdown Previewer" },
+    { id: 'edit-and-preview-markdown', href: to.MARKDOWN_PREVIEWER_ROUTE, icon: "Columns2Icon", label: "Markdown -  Edit and Preview Live" },
 ];
 
 // Function to get a link by its id
