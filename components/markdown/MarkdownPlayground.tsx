@@ -9,7 +9,7 @@ export default function MarkdownPlayground() {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
-            <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown} />
+            <MarkdownEditor markdown={{ value: markdown, update: setMarkdown }} />
             <MarkdownPreview markdown={markdown} />
         </div>
     );
