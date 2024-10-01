@@ -3,29 +3,21 @@
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
+import SampleMarkdown from '@/components/markdown/SampleMarkdown';
+import ConfirmationModal from '@/components/ui/ConfirmationModal';
 import { PencilRulerIcon, ExpandIcon, ShrinkIcon, Trash2Icon } from 'lucide-react';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { FileInput } from '@/components/ui/FileInput';
 
 interface MarkdownEditorProps {
   markdown: { value: string; update: (value: string) => void };
 }
+
 export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
   const { value, update } = markdown;
-
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const handleToggleFullScreen = () => {
-    setIsFullScreen(!isFullScreen);
+    setIsFullScreen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -42,9 +34,13 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
   };
 
   const handleClear = () => {
-    const clearedValue = '';
-    update(clearedValue);
-    localStorage.setItem('markdown', clearedValue);
+    update('');
+    localStorage.setItem('markdown', '');
+  };
+
+  const handleLoadSample = () => {
+    update(SampleMarkdown);
+    localStorage.setItem('markdown', SampleMarkdown);
   };
 
   const handleFileSelect = (file: File) => {
@@ -61,9 +57,8 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
   return (
     <div className={cn(
       "flex flex-col",
-      isFullScreen && "fixed p-8 top-0 left-0 bg-gray-50 right-0 bottom-0 z-50 scrollbar-hide"
+      isFullScreen && "fixed p-8 top-0 left-0 bg-gray-50 right-0 bottom-0 z-40 scrollbar-hide"
     )}>
-
       {/* Editor Header */}
       <div className="flex items-center justify-between mb-2 bg-black text-white rounded p-2" id='editor-header'>
         <h2 className="text-xl font-semibold mb-2 flex items-center">
@@ -71,6 +66,28 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
           Editor
         </h2>
         <div className='flex space-x-2'>
+          {/* Load Sample Button or Confirmation Modal */}
+          {value === '' ? (
+            <Button
+              className='bg-black hover:underline underline-offset-4 font-normal text-xs md:text-sm mr-4'
+              size='icon'
+              title='Load Sample'
+              onClick={handleLoadSample}
+            >
+              Sample
+            </Button>
+          ) : (
+            <ConfirmationModal
+              title="Load Sample?"
+              message="This will replace your current content. Are you sure?"
+              onConfirm={handleLoadSample}
+              className='bg-black hover:underline underline-offset-4 font-normal text-xs md:text-sm mr-4'
+              triggerText="Sample"
+              confirmText="Yes"
+              cancelText="No"
+            // Set restProps if needed
+            />
+          )}
 
           {/* Open Markdown File Button */}
           <FileInput
@@ -85,7 +102,7 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
           {/* FullScreen Control Button */}
           <Button
             className='bg-black hover:bg-gray-50 hover:text-black'
-            size={'icon'}
+            size='icon'
             title='Toggle Full Screen'
             onClick={handleToggleFullScreen}
           >
@@ -93,31 +110,15 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
           </Button>
 
           {/* Clear Editor Button with Confirmation Dialog */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className='bg-black hover:bg-gray-50 hover:text-black' size={'icon'} title='Clear Editor'>
-                <Trash2Icon className="w-4 h-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Clear Editor?</DialogTitle>
-                <DialogDescription>
-                  It will delete all the content in the editor.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="sm:justify-start">
-                <Button type="button" variant="default" onClick={handleClear} disabled={value === ''} className="w-full border border-black">
-                  Clear
-                </Button>
-                <DialogClose asChild>
-                  <Button type="button" variant="secondary" className='border border-black'>
-                    Close
-                  </Button>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <ConfirmationModal
+            title="Clear Editor?"
+            message="It will delete all the content in the editor."
+            onConfirm={handleClear}
+            className='bg-black hover:bg-gray-50 hover:text-black'
+            triggerIconClass="w-4 h-4"
+            triggerIconName='Trash2Icon'
+            confirmText='Clear'
+          />
         </div>
       </div>
 
@@ -131,7 +132,7 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
 
       {/* Only display when full screen */}
       {isFullScreen &&
-        <Button type='button' size={'sm'} onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
+        <Button type='button' size='sm' onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
           Toggle Full Screen
         </Button>
       }
