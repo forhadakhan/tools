@@ -1,22 +1,12 @@
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { META_INFO } from "@/lib/meta";
+import { fontVariables } from "@/lib/fonts";
 import { SchemaMarkup } from "@/lib/schema-markup";
 
 export const metadata: Metadata = META_INFO;
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export default function RootLayout({
   children,
@@ -35,8 +25,8 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen flex flex-col antialiased bg-gray-50 px-4 ",
-          geistSans.variable, geistMono.variable,
+          "min-h-screen flex flex-col antialiased bg-gray-50 px-2 md:px-4",
+          ...Object.values(fontVariables) // Spread the values of fontVariables
         )}
         style={{ minHeight: '100vh' }}
       >

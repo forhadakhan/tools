@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
@@ -39,6 +39,13 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --font-sans: "Inter", sans-serif;
+    --font-serif: "Noto Serif", serif;
+    --font-sans-bengali: "Noto Sans Bengali", sans-serif;
+    --font-serif-bengali: "Noto Serif Bengali", serif;
+    --font-anek-bangla: "Anek Bangla", sans-serif;
+    --font-geist-mono: "Geist Mono", monospace;
+    --font-geist-sans: "Geist Sans", sans-serif;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -65,6 +72,13 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --font-sans: "Inter", sans-serif;
+    --font-serif: "Noto Serif", serif;
+    --font-sans-bengali: "Noto Sans Bengali", sans-serif;
+    --font-serif-bengali: "Noto Serif Bengali", serif;
+    --font-anek-bangla: "Anek Bangla", sans-serif;
+    --font-geist-mono: "Geist Mono", monospace;
+    --font-geist-sans: "Geist Sans", sans-serif;
   }
 }
 
@@ -76,3 +90,37 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ************************************* */
+/* Fonts */
+
+.text-sans {
+  font-family: var(--font-sans);
+}
+
+.text-serif {
+  font-family: var(--font-serif);
+}
+
+.text-sans-bn {
+  font-family: var(--font-sans-bengali);
+}
+
+.text-serif-bn {
+  font-family: var(--font-serif-bengali);
+}
+
+.text-anek-bn {
+  font-family: var(--font-anek-bangla);
+  word-spacing: 0.5rem;
+}
+
+.text-geist-mono {
+  font-family: var(--font-geist-mono);
+}
+
+.text-geist-sans {
+  font-family: var(--font-geist-sans);
+}
+
+/* ************************************* */
