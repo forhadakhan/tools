@@ -1,6 +1,12 @@
+"use client";
+
 import styled from 'styled-components';
+import React, { useState } from 'react';
 import ReactShowdown from 'react-showdown';
+import { Button } from '@/components/ui/button';
 import { MarkdownIcon } from '@/components/markdown/MarkdownIcon';
+import { ExpandIcon, ShrinkIcon, PrinterIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // Define the styled component with all your styles
 const PreviewContent = styled.div`
@@ -152,12 +158,169 @@ const PreviewContent = styled.div`
 `;
 
 export default function MarkdownPreview({ markdown }: { markdown: string }) {
+    const [isFullScreen, setIsFullScreen] = useState(false);
+
+    const handleToggleFullScreen = () => {
+        setIsFullScreen(!isFullScreen);
+    };
+
+    const handlePrint = () => {
+        const printContent = document.getElementById("preview-content")?.innerHTML;
+        const printWindow = window.open('', '_blank');
+
+        if (printWindow && printContent) {
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Print Preview</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
+                        <style>
+                            body {
+                                font-family: "Noto Sans", sans-serif;
+                                margin: 20px;
+                            }
+                            blockquote {
+                                margin: 20px 15px !important;
+                                padding: 0.4em;
+                                color: #666c74;
+                                border-left: 0.25em solid #dfe2e5;
+                                background-color: #f3f3f3;
+                            }
+                            p {
+                                margin: 10px 0 !important;
+                                line-height: 1.6 !important;
+                            }
+                            a {
+                                text-decoration: none;
+                                transition: color 0.3s ease-in-out !important;
+                            }
+                            a:hover {
+                                text-decoration: underline;
+                            }
+                            code {
+                                background-color: #eeecec;
+                                border-radius: 8px;
+                                padding: 5px;
+                                margin: 10px 0;
+                                font-family: "Courier New", Courier, monospace;
+                                font-size: 14px;
+                                line-height: 1.5;
+                                color: #333;
+                            }
+                            pre {
+                                display: block;
+                                background-color: #eeecec !important;
+                                padding: 15px !important;
+                                margin: 15px 0 !important;
+                                border-radius: 15px;
+                            }
+                            h1, h2, h3, h4, h5, h6 {
+                                font-weight: bold !important;
+                                margin-top: 20px !important;
+                                margin-bottom: 10px !important;
+                            }
+                            h1 {
+                                font-size: 32px !important;
+                                border-bottom: 1px solid #eaecef !important;
+                                padding-bottom: 10px !important;
+                            }
+                            h2 {
+                                font-size: 24px !important;
+                                border-bottom: 1px solid #eaecef !important;
+                                padding-bottom: 6px !important;
+                            }
+                            h3 { font-size: 20px !important; }
+                            h4 { font-size: 16px !important; }
+                            h5 { font-size: 14px !important; }
+                            h6 { font-size: 12px !important; }
+                            table {
+                                width: 100% !important;
+                                border-collapse: collapse !important;
+                                margin-bottom: 16px !important;
+                            }
+                            th, td {
+                                padding: 6px 13px !important;
+                                border: 1px solid #dfe2e5 !important;
+                            }
+                            th {
+                                background-color: #f6f8fa !important;
+                                font-weight: bold !important;
+                            }
+                            td {
+                                background-color: #fff !important;
+                            }
+                            img {
+                                width: auto;
+                                margin: 2rem auto;
+                                height: auto;
+                                border: 0;
+                                vertical-align: middle;
+                            }
+                            strong { font-weight: 600; }
+                            em, i { font-style: italic; }
+                            del {
+                                text-decoration: line-through;
+                                color: #cb2431;
+                            }
+                            ul {
+                                list-style-type: disc !important;
+                                margin: 10px !important;
+                                list-style-position: outside !important;
+                            }
+                            ul ul { list-style-type: circle !important; }
+                            ul ul ul { list-style-type: square !important; }
+                            ol {
+                                list-style-type: decimal !important;
+                                margin: 15px !important;
+                            }
+                            .border-bottom-none {
+                                border-bottom: none !important;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div id="preview-content">${printContent}</div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    };
+
     return (
-        <div>
-            <h2 className="text-xl font-semibold mb-2 flex items-center">
-                <MarkdownIcon className="w-10 h-8 fill-white bg-black border rounded-md mr-2 px-2" />
-                Preview
-            </h2>
+        <div className={cn(
+            "flex flex-col",
+            isFullScreen && "fixed p-8 top-0 left-0 bg-gray-50 right-0 bottom-0 z-50 scrollbar-hide"
+        )}>
+            {/* Editor Header */}
+            <div className="flex items-center justify-between mb-2 bg-black rounded p-2" id='editor-header'>
+                <h2 className="text-xl font-semibold mb-2 flex items-center text-white">
+                    <MarkdownIcon className="w-12 h-8 bg-black fill-white rounded-md mr-2 px-2" />
+                    Preview
+                </h2>
+                <div className='flex space-x-2'>
+                    {/* FullScreen Control Button */}
+                    <Button
+                        size={'icon'}
+                        title='Toggle FullScreen'
+                        onClick={handleToggleFullScreen}
+                        className='bg-black hover:bg-gray-50 hover:text-black'
+                    >
+                        {isFullScreen ? <ShrinkIcon className="w-4 h-4" /> : <ExpandIcon className="w-4 h-4" />}
+                    </Button>
+
+                    {/* Print Button */}
+                    <Button
+                        size={'icon'}
+                        title='Print Preview'
+                        onClick={handlePrint}
+                        className='bg-black hover:bg-gray-50 hover:text-black'
+                    >
+                        <PrinterIcon className="w-4 h-4" />
+                    </Button>
+                </div>
+            </div>
 
             <PreviewContent className="h-[calc(100vh-200px)] border rounded border-black overflow-auto w-full bg-white p-6 scrollbar-hide">
                 <ReactShowdown
@@ -167,6 +330,13 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                     options={{ emoji: true }}
                 />
             </PreviewContent>
+
+            {/* Only display when full screen */}
+            {isFullScreen && (
+                <Button type='button' size={'sm'} onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
+                    Toggle Full Screen
+                </Button>
+            )}
         </div>
     );
 }
