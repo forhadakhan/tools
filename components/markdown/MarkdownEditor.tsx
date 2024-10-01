@@ -75,9 +75,9 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
     )}>
 
       {/* Editor Header */}
-      <div className="flex items-center justify-between mb-2" id='editor-header'>
+      <div className="flex items-center justify-between mb-2 bg-black text-white rounded p-2" id='editor-header'>
         <h2 className="text-xl font-semibold mb-2 flex items-center">
-          <PencilRulerIcon className="w-10 h-8 fill-white bg-black border rounded-md mr-2 px-2" />
+          <PencilRulerIcon className="w-10 h-8 bg-black mr-2 px-2" />
           Editor
         </h2>
         <div className='flex space-x-2'>
@@ -87,16 +87,16 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
             onFileSelect={handleFileSelect}
             accept=".md"
             size="icon"
-            className="border border-black"
+            className='bg-black hover:bg-gray-50 hover:text-black'
             title="Open Markdown File"
             hideText
           />
 
           {/* FullScreen Control Button */}
           <Button
-            variant="outline"
+            className='bg-black hover:bg-gray-50 hover:text-black'
             size={'icon'}
-            title='Toggle FullScreen'
+            title='Toggle Full Screen'
             onClick={handleToggleFullScreen}
           >
             {isFullScreen ? <ShrinkIcon className="w-4 h-4" /> : <ExpandIcon className="w-4 h-4" />}
@@ -104,7 +104,7 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
 
           {/* Save as Markdown Button */}
           <Button
-            variant="outline"
+            className='bg-black hover:bg-gray-50 hover:text-black'
             size={'icon'}
             title='Save as Markdown'
             onClick={handleSaveAsMarkdown}
@@ -115,7 +115,7 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
           {/* Clear Editor Button with Confirmation Dialog */}
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" size={'icon'} title='Clear Editor'>
+              <Button className='bg-black hover:bg-gray-50 hover:text-black' size={'icon'} title='Clear Editor'>
                 <Trash2Icon className="w-4 h-4" />
               </Button>
             </DialogTrigger>
