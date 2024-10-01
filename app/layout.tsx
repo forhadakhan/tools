@@ -23,6 +23,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -33,11 +35,18 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen antialiased bg-gray-50",
+          "min-h-screen flex flex-col antialiased bg-gray-50 px-4 ",
           geistSans.variable, geistMono.variable,
         )}
+        style={{ minHeight: '100vh' }}
       >
-        {children}
+        <div className="flex-grow">
+          {children}
+        </div>
+
+        <footer className="text-xs md:text-sm text-gray-400 text-center py-8 mt-auto">
+          &copy; {currentYear} <a href="https://forhadakhan.com" className="font-semibold">Forhad Khan</a>. All rights reserved.
+        </footer>
       </body>
     </html>
   );
