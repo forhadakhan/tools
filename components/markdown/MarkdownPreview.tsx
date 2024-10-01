@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import ReactShowdown from 'react-showdown';
 import { Button } from '@/components/ui/button';
 import { MarkdownIcon } from '@/components/markdown/MarkdownIcon';
-import { ExpandIcon, ShrinkIcon, PrinterIcon } from 'lucide-react';
+import { ExpandIcon, ShrinkIcon, PrinterIcon, DownloadIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Define the styled component with all your styles
@@ -288,6 +288,16 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
         }
     };
 
+    const handleSaveAsMarkdown = () => {
+      const blob = new Blob([markdown], { type: 'text/markdown' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'document.md';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
     return (
         <div className={cn(
             "flex flex-col",
@@ -300,6 +310,17 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                     Preview
                 </h2>
                 <div className='flex space-x-2'>
+
+                    {/* Save as Markdown Button */}
+                    <Button
+                        className='bg-black hover:bg-gray-50 hover:text-black'
+                        size={'icon'}
+                        title='Save as Markdown'
+                        onClick={handleSaveAsMarkdown}
+                    >
+                        <DownloadIcon className="w-4 h-4" />
+                    </Button>
+
                     {/* FullScreen Control Button */}
                     <Button
                         size={'icon'}

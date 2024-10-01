@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
-import { PencilRulerIcon, ExpandIcon, ShrinkIcon, Trash2Icon, DownloadIcon } from 'lucide-react';
+import { PencilRulerIcon, ExpandIcon, ShrinkIcon, Trash2Icon } from 'lucide-react';
 import {
   Dialog,
   DialogClose,
@@ -45,16 +45,6 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
     const clearedValue = '';
     update(clearedValue);
     localStorage.setItem('markdown', clearedValue);
-  };
-
-  const handleSaveAsMarkdown = () => {
-    const blob = new Blob([value], { type: 'text/markdown' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'document.md';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const handleFileSelect = (file: File) => {
@@ -100,16 +90,6 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
             onClick={handleToggleFullScreen}
           >
             {isFullScreen ? <ShrinkIcon className="w-4 h-4" /> : <ExpandIcon className="w-4 h-4" />}
-          </Button>
-
-          {/* Save as Markdown Button */}
-          <Button
-            className='bg-black hover:bg-gray-50 hover:text-black'
-            size={'icon'}
-            title='Save as Markdown'
-            onClick={handleSaveAsMarkdown}
-          >
-            <DownloadIcon className="w-4 h-4" />
           </Button>
 
           {/* Clear Editor Button with Confirmation Dialog */}
