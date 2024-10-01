@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     keywords: 'online text editor, create text files, edit .txt, edit .rtf, Next.js text editor, print PDF, web app',
 };
 
-export default function QrCodeLayout() {
+export default function TextEditorHomePage() {
 
     return (
         <main>

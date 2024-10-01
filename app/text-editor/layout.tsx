@@ -5,7 +5,7 @@ import { getAppLinkById } from '@/lib/apps-data';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 
 
-export default function TextEditorHome({ children }: { children: React.ReactNode }) {
+export default function TextEditorHomeLayout({ children }: { children: React.ReactNode }) {
     // Retrieve application link details based on the 'text-editor' id
     const appLink = getAppLinkById('text-editor');
 
