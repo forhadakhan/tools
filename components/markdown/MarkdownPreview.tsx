@@ -1,15 +1,15 @@
 "use client";
 
+import { cn } from '@/lib/utils';
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import ReactShowdown from 'react-showdown';
 import { Button } from '@/components/ui/button';
 import { MarkdownIcon } from '@/components/markdown/MarkdownIcon';
 import { ExpandIcon, ShrinkIcon, PrinterIcon, DownloadIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 // Define the styled component with all your styles
-const PreviewContent = styled.div`
+const PreviewContent = styled.main`
     #preview-content blockquote {
         margin: 20px 15px !important;
         padding: 0.4em;
@@ -24,6 +24,7 @@ const PreviewContent = styled.div`
     }
 
     #preview-content a {
+        color: blue;
         text-decoration: none;
         transition: color 0.3s ease-in-out !important;
     }
@@ -113,7 +114,8 @@ const PreviewContent = styled.div`
 
     #preview-content img {
         width: auto;
-        margin: 2rem auto;
+        max-width: 100%;
+        margin: 1.5rem auto;
         height: auto;
         border: 0;
         vertical-align: middle;
@@ -157,6 +159,7 @@ const PreviewContent = styled.div`
     }
 `;
 
+
 export default function MarkdownPreview({ markdown }: { markdown: string }) {
     const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -191,6 +194,7 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                                 line-height: 1.6 !important;
                             }
                             a {
+                                color: blue;
                                 text-decoration: none;
                                 transition: color 0.3s ease-in-out !important;
                             }
@@ -251,7 +255,8 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                             }
                             img {
                                 width: auto;
-                                margin: 2rem auto;
+                                max-width: 100%;
+                                margin: 1.5rem auto;
                                 height: auto;
                                 border: 0;
                                 vertical-align: middle;
@@ -289,27 +294,27 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
     };
 
     const handleSaveAsMarkdown = () => {
-      const blob = new Blob([markdown], { type: 'text/markdown' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'document.md';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+        const blob = new Blob([markdown], { type: 'text/markdown' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'document.md';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (
-        <div className={cn(
+        <article className={cn(
             "flex flex-col",
             isFullScreen && "fixed p-8 top-0 left-0 bg-gray-50 right-0 bottom-0 z-50 scrollbar-hide"
         )}>
             {/* Editor Header */}
-            <div className="flex items-center justify-between mb-2 bg-black rounded p-2" id='editor-header'>
+            <header className="flex items-center justify-between mb-2 bg-black rounded p-2" id='editor-header'>
                 <h2 className="text-xl font-semibold mb-2 flex items-center text-white">
                     <MarkdownIcon className="w-12 h-8 bg-black fill-white rounded-md mr-2 px-2" />
                     Preview
                 </h2>
-                <div className='flex space-x-2'>
+                <section className='flex space-x-2'>
 
                     {/* Save as Markdown Button */}
                     <Button
@@ -340,24 +345,33 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                     >
                         <PrinterIcon className="w-4 h-4" />
                     </Button>
-                </div>
-            </div>
+                </section>
+            </header>
 
             <PreviewContent className="h-[calc(100vh-200px)] border rounded border-black overflow-auto w-full bg-white p-6 scrollbar-hide">
-                <ReactShowdown
-                    id="preview-content"
-                    markdown={markdown}
-                    flavor="github"
-                    options={{ emoji: true }}
-                />
+                {markdown ? (
+                    <ReactShowdown
+                        id="preview-content"
+                        markdown={markdown}
+                        flavor="github"
+                        options={{ emoji: true }}
+                    />
+                ) : (
+                    <div className="flex items-center justify-center h-full">
+                        <MarkdownIcon className="w-24 h-24 fill-gray-300" aria-label="No content available" />
+                    </div>
+                )}
             </PreviewContent>
 
             {/* Only display when full screen */}
             {isFullScreen && (
-                <Button type='button' size={'sm'} onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
-                    Toggle Full Screen
-                </Button>
+                <footer>
+                    <Button type='button' size={'sm'} onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
+                        Toggle Full Screen
+                    </Button>
+                </footer>
             )}
-        </div>
+        </article>
     );
 }
+
