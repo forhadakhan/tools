@@ -69,7 +69,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 <Button
                     className={cn('flex items-center justify-center space-x-2', className)}
                     size="icon"
-                    title={triggerText || 'Open Confirmation'}
+                    title={triggerText || title || 'Open Confirmation'}
                 >
                     {triggerIcon || (triggerIconName && <DynamicIcon name={triggerIconName} className={triggerIconClass || ''} />)}
                     {triggerText && <span>{triggerText}</span>}
