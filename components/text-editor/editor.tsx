@@ -7,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { FileInput } from '@/components/ui/FileInput';
 import { PlusIcon, MinusIcon, PrinterIcon, SaveIcon, FileIcon } from 'lucide-react';
 
-
 /**
  * Props for EditorHeader.
  */
@@ -25,17 +24,17 @@ interface EditorHeaderProps {
  */
 const EditorHeader: React.FC<EditorHeaderProps> = ({ fileName, setFileName, zoomLevel, handleZoom }) => (
     <header className="flex items-center justify-between px-4 pb-3">
-        <div className="flex items-center">
+        <section className="flex items-center">
             <FileIcon className="h-4 w-4 mr-2" />
             <Input
                 type="text"
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
-                className='border-0 focus:ring-0 focus:border-slate-200 focus:shadow-none shadow-none'
+                className='border-0 focus:ring-0 focus:border-slate-200 focus:shadow-none shadow-none underline underline-offset-4'
                 aria-label="File name"
             />
-        </div>
-        <div className="flex items-center space-x-2 ml-auto">
+        </section>
+        <nav className="flex items-center space-x-2 ml-auto">
             <Button size="icon" variant="outline" onClick={() => handleZoom('out')} aria-label="Zoom out">
                 <MinusIcon className="h-4 w-4" />
             </Button>
@@ -43,7 +42,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ fileName, setFileName, zoom
             <Button size="icon" variant="outline" onClick={() => handleZoom('in')} aria-label="Zoom in">
                 <PlusIcon className="h-4 w-4" />
             </Button>
-        </div>
+        </nav>
     </header>
 );
 
@@ -66,9 +65,9 @@ const EditorFooter: React.FC<EditorFooterProps> = ({ characterCount, wordCount, 
         {
             characterCount > 0
                 ? (
-                    <>
+                    <span>
                         Total <strong>{characterCount}</strong> characters, <strong>{wordCount}</strong> words, and <strong>{lineCount}</strong> lines
-                    </>
+                    </span>
                 )
                 : 'No content.'
         }
@@ -157,7 +156,7 @@ export const TextEditor: React.FC = () => {
         <article className='container w-full mx-auto p-4'>
 
             {/* Editor Menu Section */}
-            <section className="mb-4 flex space-x-2">
+            <header className="mb-4 flex space-x-2">
                 <FileInput size={'sm'} onFileSelect={handleFileChange} accept=".txt,.rtf" />
                 <Button size={'sm'} onClick={() => handleSave('txt')} variant="secondary" className='border hover:border-black'>
                     <SaveIcon className="h-4 w-4 mr-2" />
@@ -171,34 +170,36 @@ export const TextEditor: React.FC = () => {
                     <PrinterIcon className="h-4 w-4 md:mr-2" />
                     <span className='hidden md:inline'>Print</span>
                 </Button>
-            </section>
+            </header>
 
             {/* Editor Section */}
-            <article className="grid w-full gap-1.5 text-sans-bn border border-black rounded-lg py-4">
+            <section className="grid w-full gap-1.5 text-sans-bn border border-black rounded-lg py-4">
                 <EditorHeader
                     fileName={fileName}
                     setFileName={setFileName}
                     zoomLevel={zoomLevel}
                     handleZoom={handleZoom}
                 />
-                <Textarea
-                    id="editor"
-                    value={content}
-                    onChange={handleContentChange}
-                    placeholder="Start typing ..."
-                    className="h-[calc(100vh-200px)] py-4 mb-2 bg-white shadow-none border-y rounded-none border-x-0 focus:shadow-none focus:border-slate-200 focus-ring-0"
-                    style={{
-                        fontSize: `${zoomLevel}%`,
-                        lineHeight: `${1.2 + (zoomLevel - 100) / 200}` // More moderate line height increase
-                    }}
-                    aria-label="Text editor"
-                />
+                <main>
+                    <Textarea
+                        id="editor"
+                        value={content}
+                        onChange={handleContentChange}
+                        placeholder="Start typing ..."
+                        className="h-[calc(100vh-200px)] py-4 mb-2 bg-white shadow-none border-y rounded-none border-x-0 focus:shadow-none focus:border-slate-200 focus-ring-0"
+                        style={{
+                            fontSize: `${zoomLevel}%`,
+                            lineHeight: `${1.2 + (zoomLevel - 100) / 200}` // Controll line height with zooming. 
+                        }}
+                        aria-label="Text editor"
+                    />
+                </main>
                 <EditorFooter
                     characterCount={characterCount}
                     wordCount={wordCount}
                     lineCount={lineCount}
                 />
-            </article>
+            </section>
         </article>
     );
 }
