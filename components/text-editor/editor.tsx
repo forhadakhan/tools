@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FileInput } from '@/components/ui/FileInput';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PlusIcon, MinusIcon, PrinterIcon, SaveIcon, FileIcon } from 'lucide-react';
 
 /**
@@ -97,17 +97,6 @@ export const TextEditor: React.FC = () => {
         reader.readAsText(file);
     };
 
-    const handleSave = (format: 'txt' | 'rtf') => {
-        const mimeType = format === 'txt' ? 'text/plain;charset=utf-8' : 'application/rtf;charset=utf-8';
-        const rtfContent = format === 'rtf' ? `{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat{\\fonttbl{\\f0\\fnil\\fcharset0 Calibri;}}\\viewkind4\\uc1 \\pard\\fs22\\lang9 ${content}\\par}` : content;
-
-        const blob = new Blob([rtfContent], { type: mimeType });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${fileName || 'document'}.${format}`;
-        link.click();
-    };
-
     const handlePrint = () => {
         const printWindow = window.open('', '_blank');
         if (printWindow) {
@@ -151,6 +140,33 @@ export const TextEditor: React.FC = () => {
         return { characterCount, wordCount, lineCount };
     };
     const { characterCount, wordCount, lineCount } = calculateStats(content);
+
+    // Define handleSave using useCallback to avoid unnecessary re-renders
+    const handleSave = useCallback((format: 'txt' | 'rtf') => {
+        const mimeType = format === 'txt' ? 'text/plain;charset=utf-8' : 'application/rtf;charset=utf-8';
+        const rtfContent = format === 'rtf' ? `{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat{\\fonttbl{\\f0\\fnil\\fcharset0 Calibri;}}\\viewkind4\\uc1 \\pard\\fs22\\lang9 ${content}\\par}` : content;
+
+        const blob = new Blob([rtfContent], { type: mimeType });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${fileName || 'document'}.${format}`;
+        link.click();
+    }, [content, fileName]);
+
+    // Use effect to handle keydown event
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.ctrlKey && event.key === 's') {
+                event.preventDefault(); // Prevent the default save action
+                handleSave('txt'); // Save as TXT
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleSave]);
 
     return (
         <article className='container w-full mx-auto p-4'>
