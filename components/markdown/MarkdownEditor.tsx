@@ -3,10 +3,10 @@
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
+import { FileInput } from '@/components/ui/FileInput';
 import SampleMarkdown from '@/components/markdown/SampleMarkdown';
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
-import { PencilRulerIcon, ExpandIcon, ShrinkIcon, Trash2Icon } from 'lucide-react';
-import { FileInput } from '@/components/ui/FileInput';
+import { PencilRulerIcon, ExpandIcon, ShrinkIcon } from 'lucide-react';
 
 interface MarkdownEditorProps {
   markdown: { value: string; update: (value: string) => void };
@@ -55,17 +55,17 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
   };
 
   return (
-    <div className={cn(
+    <article className={cn(
       "flex flex-col",
       isFullScreen && "fixed p-8 top-0 left-0 bg-gray-50 right-0 bottom-0 z-40 scrollbar-hide"
     )}>
       {/* Editor Header */}
-      <div className="flex items-center justify-between mb-2 bg-black text-white rounded p-2" id='editor-header'>
+      <header className="flex items-center justify-between mb-2 bg-black text-white rounded p-2" id='editor-header'>
         <h2 className="text-xl font-semibold mb-2 flex items-center">
           <PencilRulerIcon className="w-10 h-8 bg-black mr-2 px-2" />
           Editor
         </h2>
-        <div className='flex space-x-2'>
+        <section className='flex space-x-2'>
           {/* Load Sample Button or Confirmation Modal */}
           {value === '' ? (
             <Button
@@ -119,23 +119,27 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
             triggerIconName='Trash2Icon'
             confirmText='Clear'
           />
-        </div>
-      </div>
+        </section>
+      </header>
 
       {/* Markdown Editor */}
-      <textarea
-        className="w-full h-[calc(100vh-200px)] p-4 border border-black rounded scrollbar-hide"
-        value={value}
-        onChange={handleChange}
-        placeholder="Enter your markdown here..."
-      />
+      <main>
+        <textarea
+          className="w-full h-[calc(100vh-200px)] p-4 border border-black rounded scrollbar-hide"
+          value={value}
+          onChange={handleChange}
+          placeholder="Enter your markdown here..."
+        />
+      </main>
 
       {/* Only display when full screen */}
       {isFullScreen &&
-        <Button type='button' size='sm' onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
-          Toggle Full Screen
-        </Button>
+        <footer>
+          <Button type='button' size='sm' onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
+            Toggle Full Screen
+          </Button>
+        </footer>
       }
-    </div>
+    </article>
   );
 }
