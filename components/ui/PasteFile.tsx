@@ -1,4 +1,3 @@
-"use client";
 
 import { Button } from "@/components/ui/button";
 import { Clipboard } from "lucide-react";
@@ -20,13 +19,14 @@ export const PasteFile: React.FC<PasteFileProps> = ({ processFile, setErrorMessa
         let imageFound = false
 
         if (items) {
-            for (const item of items) {
+            const itemsArray = Array.from(items); // Convert DataTransferItemList to an array
+            for (const item of itemsArray) {
                 if (item.type.startsWith('image/')) {
-                    const file = item.getAsFile()
+                    const file = item.getAsFile();
                     if (file) {
-                        imageFound = true
-                        await processFile(file)
-                        break
+                        imageFound = true;
+                        processFile(file);
+                        break;
                     }
                 }
             }
