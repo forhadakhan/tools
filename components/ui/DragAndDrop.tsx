@@ -1,7 +1,6 @@
-"use client";
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { Upload } from 'lucide-react'
+import { UploadIcon } from 'lucide-react'
 
 interface DragAndDropProps {
     processFile: (file: File) => void;
@@ -11,7 +10,7 @@ interface DragAndDropProps {
 export const DragAndDrop: React.FC<DragAndDropProps> = ({ processFile, setErrorMessage }) => {
     const [isDragging, setIsDragging] = useState(false)
 
-    
+
     const handleDragEnter = (e: DragEvent) => {
         e.preventDefault()
         e.stopPropagation()
@@ -47,7 +46,7 @@ export const DragAndDrop: React.FC<DragAndDropProps> = ({ processFile, setErrorM
         }
     }, [processFile, setIsDragging, setErrorMessage])
 
-    
+
     useEffect(() => {
         window.addEventListener('dragenter', handleDragEnter)
         window.addEventListener('dragleave', handleDragLeave)
@@ -64,12 +63,12 @@ export const DragAndDrop: React.FC<DragAndDropProps> = ({ processFile, setErrorM
 
     return (
         <>
-            
+
             {/* While dragging, show a message */}
             {isDragging && (
                 <div className="fixed baackdrop-filter backdrop-blur-sm inset-0 pointer-events-none flex items-center justify-center bg-primary/20 z-50">
                     <div className="bg-black text-white border p-8 rounded-lg shadow-lg text-center">
-                        <Upload className="w-16 h-16 mx-auto mb-4 text-primary" />
+                        <UploadIcon className="w-16 h-16 mx-auto mb-4 text-primary text-white" />
                         <p className="text-lg font-semibold">Drop your image here</p>
                     </div>
                 </div>
