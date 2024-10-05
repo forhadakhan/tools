@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { FileInput } from '@/components/ui/FileInput';
 import SampleMarkdown from '@/components/markdown/SampleMarkdown';
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
-import { PencilRulerIcon, ExpandIcon, ShrinkIcon } from 'lucide-react';
+import { PencilRulerIcon, ExpandIcon, ShrinkIcon, FileQuestionIcon } from 'lucide-react';
 
 interface MarkdownEditorProps {
   markdown: { value: string; update: (value: string) => void };
@@ -69,20 +69,21 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
           {/* Load Sample Button or Confirmation Modal */}
           {value === '' ? (
             <Button
-              className='bg-black hover:underline underline-offset-4 font-normal text-xs md:text-sm mr-4'
+              className='bg-black hover:underline underline-offset-4 font-normal text-xs md:text-sm'
               size='icon'
               title='Load Sample'
               onClick={handleLoadSample}
             >
-              Sample
+              <FileQuestionIcon className="w-4 h-4" />
             </Button>
           ) : (
             <ConfirmationModal
               title="Load Sample?"
               message="This will replace your current content. Are you sure?"
               onConfirm={handleLoadSample}
-              className='bg-black hover:underline underline-offset-4 font-normal text-xs md:text-sm mr-4'
-              triggerText="Sample"
+              className='bg-black text-white hover:underline underline-offset-4 font-normal text-xs md:text-sm'
+              triggerIconName='FileQuestionIcon'
+              triggerIconClass='w-4 h-4'
               confirmText="Yes"
               cancelText="No"
             // Set restProps if needed
@@ -99,16 +100,6 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
             hideText
           />
 
-          {/* FullScreen Control Button */}
-          <Button
-            className='bg-black hover:bg-gray-50 hover:text-black'
-            size='icon'
-            title='Toggle Full Screen'
-            onClick={handleToggleFullScreen}
-          >
-            {isFullScreen ? <ShrinkIcon className="w-4 h-4" /> : <ExpandIcon className="w-4 h-4" />}
-          </Button>
-
           {/* Clear Editor Button with Confirmation Dialog */}
           <ConfirmationModal
             title="Clear Editor?"
@@ -119,6 +110,16 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
             triggerIconName='Trash2Icon'
             confirmText='Clear'
           />
+
+          {/* FullScreen Control Button */}
+          <Button
+            className='bg-black hover:bg-gray-50 hover:text-black'
+            size='icon'
+            title='Toggle Full Screen'
+            onClick={handleToggleFullScreen}
+          >
+            {isFullScreen ? <ShrinkIcon className="w-4 h-4" /> : <ExpandIcon className="w-4 h-4" />}
+          </Button>
         </section>
       </header>
 
