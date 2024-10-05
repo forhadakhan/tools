@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import ReactShowdown from 'react-showdown';
 import { Button } from '@/components/ui/button';
 import { MarkdownIcon } from '@/components/markdown/MarkdownIcon';
+import { CopyToClipboardButton } from '@/components/ui/CopyToClipboardButton';
 import { ExpandIcon, ShrinkIcon, PrinterIcon, DownloadIcon } from 'lucide-react';
 
 // Define the styled component with all your styles
@@ -317,6 +318,13 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                 <section className='flex space-x-2'>
 
                     {/* Save as Markdown Button */}
+                    <CopyToClipboardButton
+                        data={markdown}
+                        copyIconClassName='w-4 h-4'
+                        className='bg-black text-white hover:bg-gray-50 hover:text-black p-2 rounded'
+                    />
+
+                    {/* Save as Markdown Button */}
                     <Button
                         className='bg-black hover:bg-gray-50 hover:text-black'
                         size={'icon'}
@@ -324,16 +332,6 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                         onClick={handleSaveAsMarkdown}
                     >
                         <DownloadIcon className="w-4 h-4" />
-                    </Button>
-
-                    {/* FullScreen Control Button */}
-                    <Button
-                        size={'icon'}
-                        title='Toggle FullScreen'
-                        onClick={handleToggleFullScreen}
-                        className='bg-black hover:bg-gray-50 hover:text-black'
-                    >
-                        {isFullScreen ? <ShrinkIcon className="w-4 h-4" /> : <ExpandIcon className="w-4 h-4" />}
                     </Button>
 
                     {/* Print Button */}
@@ -344,6 +342,16 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
                         className='bg-black hover:bg-gray-50 hover:text-black'
                     >
                         <PrinterIcon className="w-4 h-4" />
+                    </Button>
+
+                    {/* FullScreen Control Button */}
+                    <Button
+                        size={'icon'}
+                        title='Toggle FullScreen'
+                        onClick={handleToggleFullScreen}
+                        className='bg-black hover:bg-gray-50 hover:text-black'
+                    >
+                        {isFullScreen ? <ShrinkIcon className="w-4 h-4" /> : <ExpandIcon className="w-4 h-4" />}
                     </Button>
                 </section>
             </header>
