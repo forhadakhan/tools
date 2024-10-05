@@ -18,6 +18,7 @@ export const META_INFO: Metadata = {
     authors: [{ name: "FORHAD KHAN", url: "https://forhadakhan.com" }],
     openGraph: {
         title: "Tools by Forhad Khan - Your all-in-One tool-kit for everyday needs!",
+        siteName: TITLE,
         description: DESCRIPTION,
         url: BASE_URL,
         type: "website",
