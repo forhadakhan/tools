@@ -8,41 +8,43 @@ import {
     MY_IP_ROUTE,
 } from "@/lib/routes";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://tools.forhadakhan.com';
+
 
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
-            url: HOME_ROUTE,
+            url: `${BASE_URL}${HOME_ROUTE}`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 1,
         },
         {
-            url: QR_GENERATE_ROUTE,
+            url: `${BASE_URL}${QR_GENERATE_ROUTE}`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: QR_READ_ROUTE,
+            url: `${BASE_URL}${QR_READ_ROUTE}`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: TEXT_EDITOR_ROUTE,
+            url: `${BASE_URL}${TEXT_EDITOR_ROUTE}`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: MARKDOWN_PREVIEWER_ROUTE,
+            url: `${BASE_URL}${MARKDOWN_PREVIEWER_ROUTE}`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: MY_IP_ROUTE,
+            url: `${BASE_URL}${MY_IP_ROUTE}`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
