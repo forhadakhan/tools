@@ -4,8 +4,8 @@ export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://tools.forha
 export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@forhadakhan.com";
 export const TITLE = "Tools by Forhad Khan";
 export const SHORT_NAME = "TFK";
-export const KEYWORDS = ["Tools", "Tool Kit", "essential tools", "all-in-one tools app", "productivity tools", "toolkit app"];
-export const DESCRIPTION = "Discover Tools - the ultimate app for all your essential tools, seamlessly combined in one convenient application!";
+export const KEYWORDS = ["tools", "tool kit", "online tools", "tools app", "tools by forhad khan", "essential tools", "all-in-one tools app", "productivity tools", "toolkit app"];
+export const DESCRIPTION = "Discover Tools - the ultimate app for all your essential tools in one app, seamlessly combined in one convenient application!";
 
 export const META_INFO: Metadata = {
     title: {
@@ -24,15 +24,15 @@ export const META_INFO: Metadata = {
         type: "website",
         images: [
             {
-                url: `/banner-image.jpeg`,
-                width: 2400,
-                height: 1260,
+                url: `/banner-image.jpg`,
+                width: 4800,
+                height: 2520,
                 alt: TITLE,
             },
             {
-                url: `/icon.jpeg`,
-                width: 800,
-                height: 800,
+                url: `/square-banner-image.jpeg`,
+                width: 2160,
+                height: 2160,
                 alt: TITLE,
             },
         ],
