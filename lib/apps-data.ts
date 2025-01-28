@@ -6,7 +6,7 @@ export const AppLinks: AppLinkProps[] = [
     { id: 'qr-code', href: to.QR_ROUTE, icon: "QrCodeIcon", label: "QR Code" },
     { id: 'text-editor', href: to.TEXT_EDITOR_ROUTE, icon: "FilePenLineIcon", label: "Text Editor" },
     { id: 'edit-and-preview-markdown', href: to.MARKDOWN_PREVIEWER_ROUTE, icon: "Columns2Icon", label: "Markdown -  Edit and Preview Live" },
-    { id: 'my-ip', href: to.MY_IP_ROUTE, icon: "GlobeIcon", label: "My IP Address" },
+    { id: 'ip-insights', href: to.MY_IP_ROUTE, icon: "GlobeIcon", label: "IP Insights" },
 ];
 
 // Function to get a link by its id

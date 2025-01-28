@@ -10,5 +10,5 @@ export const BAR_CODE_READ_ROUTE = '/bar-code/read';
 export const COLOR_ROUTE = '/color';
 export const TEXT_EDITOR_ROUTE = '/text-editor';
 export const MARKDOWN_PREVIEWER_ROUTE = '/edit-and-live-preview-markdown';
-export const MY_IP_ROUTE = '/my-ip';
-
+export const IP_INSIGHTS_ROUTE = '/ip-insights';
+export const MY_IP_ROUTE = IP_INSIGHTS_ROUTE;

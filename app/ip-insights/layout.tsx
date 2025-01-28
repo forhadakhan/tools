@@ -1,4 +1,4 @@
-// app/my-ip/layout.tsx
+// app/ip-insights/layout.tsx
 
 import HomeLink from '@/components/HomeLink';
 import { getAppLinkById } from '@/lib/apps-data';
@@ -7,7 +7,7 @@ import { DynamicIcon } from '@/components/ui/DynamicIcon';
 
 export default function MyIPLayout({ children }: { children: React.ReactNode }) {
     // Retrieve application link details based on the 'text-editor' id
-    const appLink = getAppLinkById('my-ip');
+    const appLink = getAppLinkById('ip-insights');
 
     return (
         <>
