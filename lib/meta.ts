@@ -3,9 +3,14 @@ import type { Metadata } from "next";
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://tools.forhadakhan.com";
 export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@forhadakhan.com";
 export const TITLE = "Tools by Forhad Khan";
-export const SHORT_NAME = "TFK";
-export const KEYWORDS = ["tools", "tool kit", "online tools", "tools app", "tools by forhad khan", "essential tools", "all-in-one tools app", "productivity tools", "toolkit app"];
-export const DESCRIPTION = "Discover Tools - the ultimate app for all your essential tools in one app, seamlessly combined in one convenient application!";
+export const SHORT_NAME = "Tools";
+export const DESCRIPTION = "Tools by Forhad Khan is an all-in-one app offering essential tools seamlessly combined in one convenient web application for enhanced productivity.";
+export const KEYWORDS = [
+    "all-in-one tools app", "online productivity tools", "essential online tools", "toolkit app", "tools by Forhad Khan", 
+    "QR code generator", "QR code scanner", "QR code reader", "QR code encoder", "QR code decoder", "QR code app", 
+    "text editor", "markdown editor", "online text editor", "live text editor", "markdown text editor app", 
+    "IP address lookup", "IP address details", "my IP address", "IP insights", "domain IP lookup", "IP address tool",
+];
 
 export const META_INFO: Metadata = {
     title: {
