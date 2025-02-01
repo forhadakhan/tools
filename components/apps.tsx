@@ -23,7 +23,7 @@ const AppLink: React.FC<AppLinkProps> = ({ id, href, icon, label }) => (
         {/* <CardDescription></CardDescription> */}
       </CardHeader>
       <CardContent>
-        <h1 className="font-bold tracking-wide mt-2 mb-2">
+        <h1 className="font-bold tracking-wide mt-2 mb-2 text-sm md:text-base">
           {label}
         </h1>
       </CardContent>
@@ -35,7 +35,7 @@ const AppLink: React.FC<AppLinkProps> = ({ id, href, icon, label }) => (
 export default function Apps() {
   return (
     <div className="container w-full relative">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 py-10 z-1 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 py-10 z-1 gap-4">
         {AppLinks.map(({ id, href, icon, label }) => (
           <AppLink id={id} key={href} href={href} icon={icon} label={label} />
         ))}
