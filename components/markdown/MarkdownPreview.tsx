@@ -1,8 +1,8 @@
 "use client";
 
+import React from 'react';
 import { cn } from '@/lib/utils';
 import styled from 'styled-components';
-import React, { useState } from 'react';
 import ReactShowdown from 'react-showdown';
 import { Button } from '@/components/ui/button';
 import { MarkdownIcon } from '@/components/markdown/MarkdownIcon';
@@ -161,12 +161,15 @@ const PreviewContent = styled.main`
 `;
 
 
-export default function MarkdownPreview({ markdown }: { markdown: string }) {
-    const [isFullScreen, setIsFullScreen] = useState(false);
+interface MarkdownPreviewProps {
+    markdown: string;
+    isFullScreen: boolean;
+    handleToggleFullScreen?: () => void;
+    modeToggle?: () => void;
+}
 
-    const handleToggleFullScreen = () => {
-        setIsFullScreen(!isFullScreen);
-    };
+export default function MarkdownPreview({ markdown, isFullScreen, handleToggleFullScreen, modeToggle }: MarkdownPreviewProps) {
+
 
     const handlePrint = () => {
         const printContent = document.getElementById("preview-content")?.innerHTML;
@@ -374,8 +377,8 @@ export default function MarkdownPreview({ markdown }: { markdown: string }) {
             {/* Only display when full screen */}
             {isFullScreen && (
                 <footer>
-                    <Button type='button' size={'sm'} onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
-                        Toggle Full Screen
+                    <Button type='button' size={'sm'} onClick={modeToggle} className='max-w-lg my-4 mx-auto w-36'>
+                        Edit
                     </Button>
                 </footer>
             )}

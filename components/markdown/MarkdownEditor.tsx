@@ -1,24 +1,23 @@
 "use client";
 
 import { cn } from '@/lib/utils';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import React, { useState, useEffect } from 'react';
 import { FileInput } from '@/components/ui/FileInput';
 import SampleMarkdown from '@/components/markdown/SampleMarkdown';
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
 import { PencilRulerIcon, ExpandIcon, ShrinkIcon, FileQuestionIcon } from 'lucide-react';
 
+
 interface MarkdownEditorProps {
   markdown: { value: string; update: (value: string) => void };
+  isFullScreen: boolean;
+  handleToggleFullScreen?: ({ }) => void;
+  modeToggle?: () => void;
 }
 
-export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
+export default function MarkdownEditor({ markdown, isFullScreen, handleToggleFullScreen, modeToggle }: MarkdownEditorProps) {
   const { value, update } = markdown;
-  const [isFullScreen, setIsFullScreen] = useState(false);
-
-  const handleToggleFullScreen = () => {
-    setIsFullScreen((prev) => !prev);
-  };
 
   useEffect(() => {
     const savedMarkdown = localStorage.getItem('markdown');
@@ -124,7 +123,7 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
       </header>
 
       {/* Markdown Editor */}
-      <main>
+      <main className=''>
         <textarea
           className="w-full h-[calc(100vh-200px)] p-4 border border-black rounded scrollbar-hide"
           value={value}
@@ -136,8 +135,8 @@ export default function MarkdownEditor({ markdown }: MarkdownEditorProps) {
       {/* Only display when full screen */}
       {isFullScreen &&
         <footer>
-          <Button type='button' size='sm' onClick={handleToggleFullScreen} className='max-w-lg my-4 mx-auto'>
-            Toggle Full Screen
+          <Button type='button' size='sm' onClick={modeToggle} className='max-w-lg my-2 mx-auto w-36'>
+            Preview
           </Button>
         </footer>
       }
