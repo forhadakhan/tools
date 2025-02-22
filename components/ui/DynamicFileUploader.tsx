@@ -1,31 +1,58 @@
-import React, { useState, useCallback, useRef } from 'react'
-import { Accept, useDropzone } from 'react-dropzone'
-import { X, Upload, File } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+/**
+ * DynamicFileUploader component provides an interface to upload files via drag & drop, file selection, and clipboard pasting.
+ */
 
+import React, { useState, useCallback, useRef } from 'react'
+import { XIcon, FileIcon, UploadIcon } from 'lucide-react'
+import { Accept, useDropzone } from 'react-dropzone'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+/**
+ * Props for the FileUploader component.
+ */
 interface FileUploaderProps {
+    /** Callback fired when files are selected */
     onFilesSelected: (files: File[]) => void
+    /** Accepted file types, defined using react-dropzone's Accept type */
     acceptedFileTypes?: Accept
+    /** Whether multiple files can be uploaded */
     multiple?: boolean
+    /** Maximum number of files that can be uploaded */
     maxFiles?: number
+    /** Callback fired when a file is removed */
     onFileRemove?: (file: File) => void
+    /** Whether the file uploader is disabled */
+    disabled?: boolean
+    /** Additional class names for styling */
+    className?: string
 }
 
+/**
+ * FileUploader component provides an interface to upload files via drag & drop, file selection, and clipboard pasting.
+ */
 export default function FileUploader({
     onFilesSelected,
     acceptedFileTypes = {},
     multiple = false,
     maxFiles = 5,
     onFileRemove,
+    disabled = false,
+    className = '',
+    ...props
 }: FileUploaderProps) {
     const [files, setFiles] = useState<File[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
 
+    /**
+     * Handles file drop event and updates state.
+     */
     const onDrop = useCallback((acceptedFiles: File[]) => {
+        if (disabled) return;
         const newFiles = [...files, ...acceptedFiles].slice(0, maxFiles)
         setFiles(newFiles)
         onFilesSelected(newFiles)
-    }, [files, maxFiles, onFilesSelected])
+    }, [files, maxFiles, onFilesSelected, disabled])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -34,6 +61,9 @@ export default function FileUploader({
         maxFiles,
     })
 
+    /**
+     * Removes a specific file from the file list.
+     */
     const removeFile = (fileToRemove: File) => {
         const updatedFiles = files.filter(file => file !== fileToRemove)
         setFiles(updatedFiles)
@@ -41,6 +71,9 @@ export default function FileUploader({
         onFileRemove?.(fileToRemove)
     }
 
+    /**
+     * Handles file paste event from clipboard.
+     */
     const handlePaste = (event: React.ClipboardEvent) => {
         const pastedFiles = Array.from(event.clipboardData.files)
         if (pastedFiles.length > 0) {
@@ -50,26 +83,30 @@ export default function FileUploader({
         }
     }
 
+    /**
+     * Triggers the hidden file input for manual file selection.
+     */
     const triggerFileInput = () => {
         fileInputRef.current?.click()
     }
 
     return (
-        <section className="w-full max-w-md mx-auto" onPaste={handlePaste}>
+        <section className={cn("w-full max-w-md mx-auto", className)} onPaste={handlePaste} {...props}>
             <div
                 {...getRootProps()}
-                className={`p-8 cursor-auto border-2 border-dashed rounded-lg text-center transition-colors ${isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary'
-                    }`}
+                className={cn(
+                    "p-8 cursor-auto border-2 border-dashed rounded-lg text-center transition-colors",
+                    isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary',
+                    disabled ? 'pointer-events-none cursor-not-allowed' : ''
+                )}
             >
-                <input {...getInputProps()} ref={fileInputRef} title='file input' placeholder='input by by drag & drop or select from the device'  />
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                <p className="mt-2 text-sm text-gray-600">
-                    Drag & drop files here, or click to select files
-                </p>
+                <input {...getInputProps()} ref={fileInputRef} title='file input' placeholder='Drag & drop or select files' disabled={disabled} />
+                <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+                <p className="mt-2 text-sm text-gray-600">Drag & drop files here, or click to select files</p>
                 <p className="mt-1 text-xs text-gray-500">
-                    {Object.keys(acceptedFileTypes).length === 0 ? 'Any file type accepted' : `Accepted file types: ${Object.values(acceptedFileTypes).join(', ')}`}
+                    {Object.keys(acceptedFileTypes).length === 0 ? 'Any file type accepted' : `Accepted: ${Object.values(acceptedFileTypes).join(', ')}`}
                 </p>
-                <Button onClick={triggerFileInput} type="button" variant="outline" className="mt-4">
+                <Button onClick={triggerFileInput} type="button" variant="outline" className="mt-4" disabled={disabled}>
                     Select Files
                 </Button>
             </div>
@@ -78,7 +115,7 @@ export default function FileUploader({
                     {files.map((file, index) => (
                         <li key={index} className="flex items-center justify-between p-2 bg-gray-100 rounded">
                             <div className="flex items-center">
-                                <File className="h-5 w-5 mr-2 text-gray-500" />
+                                <FileIcon className="h-5 w-5 mr-2 text-gray-500" />
                                 <span className="text-sm truncate">{file.name}</span>
                             </div>
                             <Button
@@ -87,7 +124,7 @@ export default function FileUploader({
                                 size="icon"
                                 className="h-8 w-8 text-gray-500 hover:text-red-500"
                             >
-                                <X className="h-4 w-4" />
+                                <XIcon className="h-4 w-4" />
                             </Button>
                         </li>
                     ))}
@@ -97,7 +134,9 @@ export default function FileUploader({
     )
 }
 
-
+/**
+ * Named exports for alternative references to FileUploader.
+ */
 export {
     FileUploader,
     FileUploader as Upload,

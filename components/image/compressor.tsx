@@ -1,13 +1,20 @@
 /**
  * File: /components/image/compressor.tsx
- * DESC: Image compression component
+ * Description: A React component for image compression using browser-image-compression.
+ * 
+ * Features:
+ * - Supports JPEG, PNG, and WebP formats.
+ * - Allows users to upload an image and adjust compression settings.
+ * - Provides options to retain resolution.
+ * - Displays original and compressed image sizes.
+ * - Allows users to download the compressed image.
  */
 
 "use client";
 
 import type React from "react";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -36,8 +43,8 @@ export function ImageCompression({ className }: ImageCompressionProps) {
     const [compressedSize, setCompressedSize] = useState<string>("")
     const [originalImage, setOriginalImage] = useState<File | null>(null)
     const [compressedImage, setCompressedImage] = useState<File | null>(null)
+    const [compressionRate, setCompressionRate] = useState<number>(0)
     const [alwaysKeepResolution, setAlwaysKeepResolution] = useState(false)
-    const fileInputRef = useRef<HTMLInputElement>(null)
 
     // Handle tab click
     const handleTabClick = (tab: string) => {
@@ -74,6 +81,7 @@ export function ImageCompression({ className }: ImageCompressionProps) {
                 const compressedFile = await imageCompression(originalImage, options)
                 setCompressedImage(compressedFile)
                 setCompressedSize(formatFileSize(compressedFile.size))
+                setCompressionRate(calculatePercentageDifference(convertToBytes(originalSize), compressedFile.size, true))
             } else {
                 setError("No image selected. Please upload an image.")
                 return
@@ -96,15 +104,13 @@ export function ImageCompression({ className }: ImageCompressionProps) {
         document.body.removeChild(link)
     }
 
-    const resetCompression = (file: File | null) => {  // eslint-disable-line 
+    const resetCompression = (file?: File | null) => {  // eslint-disable-line 
         setOriginalImage(null)
         setCompressedImage(null)
+        setCompressionRate(0)
         setOriginalSize("")
         setCompressedSize("")
         setError("")
-        if (fileInputRef.current) {
-            fileInputRef.current.value = ""
-        }
     }
 
     return (
@@ -123,11 +129,12 @@ export function ImageCompression({ className }: ImageCompressionProps) {
                                     multiple={false}
                                     acceptedFileTypes={{ 'image': SUPPORTED_FILE_TYPES }}
                                     onFileRemove={resetCompression}
+                                    disabled={originalImage !== null}
                                 />
                             </div>
 
                             <div>
-                                <div className="flex items-center space-x-2 my-4">
+                                <div className="flex items-center space-x-2 my-6">
                                     <Switch
                                         id="alwaysKeepResolution"
                                         checked={alwaysKeepResolution}
@@ -147,32 +154,36 @@ export function ImageCompression({ className }: ImageCompressionProps) {
                                         </PopoverContent>
                                     </Popover>
                                 </div>
-                                <div className="flex items-center space-x-2 my-4">
-                                    <Label htmlFor="maxSizeMB">Maximum Size (MB): {maxSizeMB.toFixed(1)}</Label>
-                                    <Popover>
-                                        <PopoverTrigger>
-                                            <InfoIcon className="h-4 w-4 text-muted-foreground" />
-                                        </PopoverTrigger>
-                                        <PopoverContent>
-                                            <ul className="list-disc p-2 pl-4 text-sm">
-                                                <li>Set the maximum file size for the compressed image.</li>
-                                                <li>The actual size may be smaller.</li>
-                                                <li>This may not work if &apos;Keep Resolution&apos; is enabled.</li>
-                                            </ul>
-                                        </PopoverContent>
-                                    </Popover>
-                                </div>
-                                <Slider
-                                    id="maxSizeMB"
-                                    min={0.1}
-                                    max={5 > maxSizeMBLimit ? maxSizeMBLimit : 5}
-                                    step={0.1}
-                                    className="max-w-xs"
-                                    value={[maxSizeMB]}
-                                    onValueChange={(value: number[]) => setMaxSizeMB(value[0])}
-                                />
+                                {originalImage && (
+                                    <div>
+                                        <div className="flex items-center space-x-2 my-6">
+                                            <Label htmlFor="maxSizeMB">Maximum Size: {maxSizeMB.toFixed(1)} MB</Label>
+                                            <Popover>
+                                                <PopoverTrigger>
+                                                    <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                                                </PopoverTrigger>
+                                                <PopoverContent>
+                                                    <ul className="list-disc p-2 pl-4 text-sm">
+                                                        <li>Set the maximum file size for the compressed image.</li>
+                                                        <li>The actual size may be smaller.</li>
+                                                        <li>This may not work if &apos;Keep Resolution&apos; is enabled.</li>
+                                                    </ul>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
+                                        <Slider
+                                            id="maxSizeMB"
+                                            min={0.1}
+                                            max={5 > maxSizeMBLimit ? maxSizeMBLimit : 5}
+                                            step={0.1}
+                                            className="max-w-xs"
+                                            value={[maxSizeMB]}
+                                            onValueChange={(value: number[]) => setMaxSizeMB(value[0])}
+                                        />
+                                    </div>
+                                )}
+                                {error && <p className="text-sm text-red-500 p-2 border border-red-500 my-6">{error}</p>}
                             </div>
-                            {error && <p className="text-sm text-red-500 p-2 border border-red-500 my-6">{error}</p>}
                         </div>
                     </CardContent>
                     {originalImage && (
@@ -207,13 +218,13 @@ export function ImageCompression({ className }: ImageCompressionProps) {
                 </div>
             )}
 
-            {originalImage && compressedImage && (
+            {originalImage && compressedImage && compressionRate > 0 && (
                 <div>
                     <h2 className="text-center text-xl font-bold text-gray-700">Compression successful.</h2>
                     <h2 className="text-center text-lg font-bold text-gray-700">
                         Your image is now
                         <span className="bg-yellow-200 text-gray-800 px-2.5 py-0.5 rounded mx-1">
-                            {calculatePercentageDifference(convertToBytes(originalSize), convertToBytes(compressedSize), true)}%
+                            {compressionRate}%
                         </span>
                         smaller!
                     </h2>
@@ -221,14 +232,14 @@ export function ImageCompression({ className }: ImageCompressionProps) {
                         <Button onClick={downloadCompressedImage}>
                             <DownloadIcon className="mr-2 h-4 w-4" /> Download Compressed Image
                         </Button>
-                        <Button onClick={() => setOriginalImage(null)} variant="outline" className="p-6 border-gray-700">
+                        <Button onClick={() => resetCompression(null)} variant="outline" className="p-6 border-gray-700">
                             <Minimize2Icon className="mr-2 h-4 w-4" /> Compress Another
                         </Button>
                     </div>
                 </div>
             )}
 
-            {originalImage && compressedImage && (
+            {originalImage && compressedImage && compressionRate > 0 && (
                 <div className="container mx-auto">
                     {/* Tabs for smaller screens */}
                     <div className="flex gap-1 items-center justify-center lg:hidden">
@@ -255,6 +266,17 @@ export function ImageCompression({ className }: ImageCompressionProps) {
                             <ImageCard img={compressedImage} size={compressedSize} title="Compressed Image" />
                         </div>
                     </div>
+                </div>
+            )}
+
+            {originalImage && compressedImage && compressionRate <= 0 && (
+                <div className="flex flex-col gap-6 items-center justify-center">
+                    <h2 className="text-center text-lg font-bold text-gray-700">
+                        The image is already compressed enough; no more compression is recommended.
+                    </h2>
+                    <Button onClick={() => resetCompression(null)} variant="outline" className="p-6 border-gray-700">
+                        <Minimize2Icon className="mr-2 h-4 w-4" /> Compress Another
+                    </Button>
                 </div>
             )}
         </div>
