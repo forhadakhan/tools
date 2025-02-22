@@ -8,6 +8,7 @@ interface FileUploaderProps {
     acceptedFileTypes?: Accept
     multiple?: boolean
     maxFiles?: number
+    onFileRemove?: (file: File) => void
 }
 
 export default function FileUploader({
@@ -15,6 +16,7 @@ export default function FileUploader({
     acceptedFileTypes = {},
     multiple = false,
     maxFiles = 5,
+    onFileRemove,
 }: FileUploaderProps) {
     const [files, setFiles] = useState<File[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -36,6 +38,7 @@ export default function FileUploader({
         const updatedFiles = files.filter(file => file !== fileToRemove)
         setFiles(updatedFiles)
         onFilesSelected(updatedFiles)
+        onFileRemove?.(fileToRemove)
     }
 
     const handlePaste = (event: React.ClipboardEvent) => {
@@ -55,10 +58,10 @@ export default function FileUploader({
         <section className="w-full max-w-md mx-auto" onPaste={handlePaste}>
             <div
                 {...getRootProps()}
-                className={`p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-colors ${isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary'
+                className={`p-8 cursor-auto border-2 border-dashed rounded-lg text-center transition-colors ${isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary'
                     }`}
             >
-                <input {...getInputProps()} ref={fileInputRef} />
+                <input {...getInputProps()} ref={fileInputRef} title='file input' placeholder='input by by drag & drop or select from the device'  />
                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
                 <p className="mt-2 text-sm text-gray-600">
                     Drag & drop files here, or click to select files
