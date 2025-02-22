@@ -12,3 +12,18 @@ export const TEXT_EDITOR_ROUTE = '/text-editor';
 export const MARKDOWN_PREVIEWER_ROUTE = '/edit-and-live-preview-markdown';
 export const IP_INSIGHTS_ROUTE = '/ip-insights';
 export const MY_IP_ROUTE = IP_INSIGHTS_ROUTE;
+export const VIDEO_EDITOR_ROUTE = '/video-editor';
+export const IMAGE_ROUTE = {
+    COMPRESSOR: '/image/compress',
+};
+export const VIDEO_EDITOR_ROUTES = {
+    MERGE: '/video-editor/merge-videos',
+    TRIM: '/video-editor/trim',
+    CONVERT: {
+        HOME: '/video-editor/convert',
+        TStoMP4: '/video-editor/convert/ts-to-mp4',
+        AVItoMP4: '/video-editor/convert/avi-to-mp4',
+    },
+    EXTRACT_AUDIO: '/video-editor/extract-audio',
+    AUDIO_OVERLAY: '/video-editor/audio-overlay',
+};

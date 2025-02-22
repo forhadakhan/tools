@@ -36,3 +36,12 @@ export interface IFormattedVCardData {
     fields: IVCardField[]; // Array of formatted vCard fields
     errors: IVCardError[] | null; // Array of errors, or null if there are no errors
 }
+
+export interface IVideoToolsDataProps {
+    id: string,
+    icon: string,
+    title: string,
+    description: string,
+    route: string,
+    isNew: boolean,
+}
