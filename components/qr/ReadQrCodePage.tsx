@@ -2,6 +2,7 @@
 "use client";
 
 import { QrCodeIcon } from 'lucide-react';
+import AutoLinkText from '../general/AutoLinkText';
 import { PasteFile } from '@/components/ui/PasteFile';
 import { ErrorAlert } from '@/components/ui/ErrorAlert';
 import { ImageUpload } from '@/components/ui/FileUpload';
@@ -42,10 +43,10 @@ export default function ReadQrCodePage() {
                         {/* Instructions */}
                         <p className="text-xs md:text-sm text-gray-500 text-center">
                             Drag and drop an image anywhere on the page, <br />
-                            or paste an image of a QR code 
-                            <kbd className="bg-black mx-1 rounded px-1 text-gray-300">Ctrl</kbd> 
-                            + 
-                            <kbd className="bg-black mx-1 rounded px-1 text-gray-300">V</kbd>. 
+                            or paste an image of a QR code
+                            <kbd className="bg-black mx-1 rounded px-1 text-gray-300">Ctrl</kbd>
+                            +
+                            <kbd className="bg-black mx-1 rounded px-1 text-gray-300">V</kbd>.
                         </p>
                     </div>
                     {/* Display error messages */}
@@ -73,7 +74,7 @@ export default function ReadQrCodePage() {
                     <section className="p-4">
                         {activeTab === 'raw' ? (
                             <>
-                                <pre className="whitespace-pre-wrap text-wrap">{qrData}</pre>
+                                <AutoLinkText text={qrData} />
                                 <CopyToClipboardButton
                                     data={qrData}
                                     buttonText="Copy"

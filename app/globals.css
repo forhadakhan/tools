@@ -166,3 +166,9 @@ body {
 		background-position: 0px 35.8px, 17.9px 0px;
 	}
 }
+
+.wrap-all {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}

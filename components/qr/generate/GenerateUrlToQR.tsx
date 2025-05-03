@@ -91,7 +91,7 @@ export const GenerateUrlToQR: React.FC = () => {
           rel="noopener noreferrer"
         >
           <ExternalLinkIcon className='inline h-4 w-4 mr-2' strokeWidth={1} />
-          {parsedUrl}
+          <span className='truncate' title={parsedUrl}>{parsedUrl}</span>
         </a>}
         {error && <p className="text-red-500 text-xs lg:text-sm py-2">{error}</p>}
       </section>
