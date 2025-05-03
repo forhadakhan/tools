@@ -19,10 +19,10 @@ export const metadata: Metadata = {
 const tabOptions = [
     { text: "Text", Component: GenerateTxtToQR },
     { text: "URL", Component: GenerateUrlToQR },
-    { text: "VCard", Component: GenerateVcardQRCode },
     { text: "WiFi", Component: GenerateWiFiToQR },
     { text: "Email", Component: GenerateEmailToQR },
     { text: "SMS", Component: GenerateSMSToQR },
+    { text: "VCard", Component: GenerateVcardQRCode },
 ];
 
 /**
