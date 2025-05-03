@@ -16,21 +16,43 @@ const urlRegex = /((https?:\/\/|www\.)[^\s/$.?#].[^\s]*)/gi;
  * Handles URLs starting with http://, https://, and www.
  *
  * @example
- * <AutoLinkText text="Visit www.example.com or https://openai.com" />
+ * <AutoLinkText text="Visit www.example.com or https://forhadakhan.com" />
  */
 const AutoLinkText: React.FC<AutoLinkTextProps> = ({ text }) => {
-  // Replace URLs with anchor elements
-  const linkedText = text.replace(urlRegex, (match) => {
-    const href = match.startsWith('http') ? match : `https://${match}`;
-    return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline underline-offset-4">${match}</a>`;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+
+  const matches = Array.from(text.matchAll(urlRegex));
+
+  matches.forEach((match, index) => {
+    const url = match[0];
+    const start = match.index ?? 0;
+
+    if (lastIndex < start) {
+      parts.push(text.slice(lastIndex, start));
+    }
+
+    const href = url.startsWith('http') ? url : `https://${url}`;
+    parts.push(
+      <a
+        key={`link-${index}`}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 hover:underline underline-offset-4"
+      >
+        {url}
+      </a>
+    );
+
+    lastIndex = start + url.length;
   });
 
-  return (
-    <div
-      dangerouslySetInnerHTML={{ __html: linkedText }}
-      className="break-words"
-    />
-  );
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return <div className="break-words">{parts}</div>;
 };
 
 export default AutoLinkText;
