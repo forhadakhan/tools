@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import { QRCode } from "@/components/qr/generate/GetQRCode";
+import { MissingQRData, QRCode } from "@/components/qr/generate/GetQRCode";
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 /**
  * `GenerateSMSToQR` is a React component that generates a QR code containing SMS information.
@@ -54,7 +55,8 @@ export const GenerateSMSToQR: React.FC = () => {
     <>
       <article className="grid w-full grid-cols-1 md:grid-cols-2">
         <section className='w-full md:min-h-80 '>
-          <p className='font-medium text-sm text-gray-600 text-center mb-2.5'>
+          <p className='font-medium text-xs text-gray-600 flex gap-2 mb-2.5'>
+            <InfoCircledIcon />
             Fill all necessary information to generate SMS QR code
           </p>
 
@@ -91,7 +93,7 @@ export const GenerateSMSToQR: React.FC = () => {
               size={250}
             />
           ) : (
-            <p className='text-sm text-gray-500'>Please provide valid data.</p>
+            <MissingQRData />
           )}
         </section>
       </article>

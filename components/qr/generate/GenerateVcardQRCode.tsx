@@ -1,8 +1,9 @@
 'use client'
 
 import vCard from 'vcard-creator';
-import { QRCode } from "@/components/qr/generate/GetQRCode";
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 import React, { useState, useMemo, useCallback } from 'react';
+import { MissingQRData, QRCode } from "@/components/qr/generate/GetQRCode";
 
 interface GenerateVcardQRCodeProps {
     name: string;
@@ -145,8 +146,9 @@ export default function GenerateVcardQRCode() {
         <>
             <article className="grid w-full grid-cols-1 md:grid-cols-2">
                 <section className='w-full md:min-h-80 '>
-                    <p className='font-medium text-sm text-gray-600 text-center mb-2.5'>
-                        Fill all necessary information to generate VCARD QR code
+                    <p className='font-medium text-xs text-gray-600 flex gap-2 mb-2.5'>
+                        <InfoCircledIcon />
+                        Fill all necessary information to generate VCARD QR Code
                     </p>
                     {/* Render input fields for contact information */}
                     {fields.map(({ id, name, type, placeholder, label, isValid = true, errorMessage }) => (
@@ -175,7 +177,7 @@ export default function GenerateVcardQRCode() {
                             size={250}
                         />
                     ) : (
-                        <p className='text-sm text-gray-500'>Please input your data.</p>
+                        <MissingQRData />
                     )}
                 </section>
             </article>

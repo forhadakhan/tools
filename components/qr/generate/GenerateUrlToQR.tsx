@@ -2,7 +2,7 @@
 
 import { ExternalLinkIcon } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
-import { QRCode } from "@/components/qr/generate/GetQRCode";
+import { MissingQRData, QRCode } from "@/components/qr/generate/GetQRCode";
 
 /**
  * `GenerateUrlToQR` component allows users to input a URL and generates a QR code for the given URL if it's valid.
@@ -71,7 +71,7 @@ export const GenerateUrlToQR: React.FC = () => {
   }, [url]);
 
   return (
-    <article className="grid w-full grid-cols-1 md:grid-cols-2 gap-4">
+    <article className="grid w-full grid-cols-1 md:grid-cols-2">
       <section className="w-full">
         <label htmlFor="url-input" className="font-medium text-sm text-gray-600">
           Enter a valid URL
@@ -102,7 +102,7 @@ export const GenerateUrlToQR: React.FC = () => {
         ) : isValid && formattedUrl ? (
           <QRCode value={formattedUrl} size={250} />
         ) : (
-          <p>No content to generate QR code</p>
+          <MissingQRData />
         )}
       </section>
     </article>

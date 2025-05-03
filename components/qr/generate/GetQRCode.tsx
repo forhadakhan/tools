@@ -1,7 +1,21 @@
 "use client";
 
+import { QrCodeIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
+
+/**
+ * `MissingQRData` component displays a message indicating that the QR code content is missing.
+ */
+const MissingQRData = () => (
+    <div className="flex flex-col items-center space-y-4 my-8">
+        <QrCodeIcon strokeWidth={1.5} size={250} className="text-gray-300 border border-slate-300 border-dashed rounded-md mt-4" />
+        <p className="bg-black/70 text-white font-bold py-2 px-4 rounded text-sm my-4 w-full text-center">
+            Missing QR Content
+        </p>
+    </div>
+);
+
 
 interface QRCodeDownloadProps {
     /**
@@ -114,7 +128,7 @@ const QRCode: React.FC<QRCodeDownloadProps> = (props) => {
             />
             {/* Button to download the QR code */}
             <button
-                className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm my-4"
+                className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm my-4 w-full text-center"
                 onClick={() => downloadQRCode('qr-code.png')}
             >
                 Download QR Code
@@ -125,6 +139,9 @@ const QRCode: React.FC<QRCodeDownloadProps> = (props) => {
 
 export {
     QRCode,
-    QRCode as GetQRCode
+    QRCode as GetQRCode,
+    MissingQRData,
+    MissingQRData as NoQRData,
+    MissingQRData as NoQR
 };
 export default QRCode;

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
-import { QRCode } from "@/components/qr/generate/GetQRCode";
+import { MissingQRData, QRCode } from "@/components/qr/generate/GetQRCode";
 
 /**
  * `GenerateTxtToQR` is a React component that generates a QR code from user-entered text.
@@ -39,7 +39,7 @@ export const GenerateTxtToQR: React.FC = () => {
               size={250} // Set the size of the QR code
             />
           ) : (
-            <p className="text-center">No content to generate QR code</p>
+            <MissingQRData />
           )}
         </section>
       </article>

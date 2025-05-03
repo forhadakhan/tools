@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
-import { QRCode } from "@/components/qr/generate/GetQRCode";
+import { InfoCircledIcon } from '@radix-ui/react-icons';
+import { MissingQRData, QRCode } from "@/components/qr/generate/GetQRCode";
 
 interface WiFiDetails {
   ssid: string;      // Network SSID
@@ -29,7 +30,8 @@ export const GenerateWiFiToQR: React.FC = () => {
     <>
       <article className="grid w-full grid-cols-1 md:grid-cols-2">
         <section className='w-full md:min-h-80 '>
-          <p className='font-medium text-sm text-gray-600 text-center mb-2.5'>
+          <p className='font-medium text-xs text-gray-600 flex gap-2 mb-2.5'>
+            <InfoCircledIcon />
             Fill all necessary information to generate WiFi QR Code
           </p>
 
@@ -97,10 +99,8 @@ export const GenerateWiFiToQR: React.FC = () => {
               value={generateWiFiContent()}
               size={250}
             />
-            : 
-            <p className='font-medium text-sm text-gray-600 text-center mb-2.5'>
-              Not enough information to generate QR Code
-            </p>
+            :
+            <MissingQRData />
           }
         </section>
       </article>

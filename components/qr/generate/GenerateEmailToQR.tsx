@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import { QRCode } from "@/components/qr/generate/GetQRCode";
+import { MissingQRData, QRCode } from "@/components/qr/generate/GetQRCode";
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 interface GenerateEmailToQRProps {
   id?: string;
@@ -45,7 +46,8 @@ const GenerateEmailToQR: React.FC<GenerateEmailToQRProps> = ({ id, className, ..
     <>
       <article className="grid w-full grid-cols-1 md:grid-cols-2">
         <section className='w-full md:min-h-80 '>
-          <p className='font-medium text-sm text-gray-600 text-center mb-2.5'>
+          <p className='font-medium text-xs text-gray-600 flex gap-2 mb-2.5'>
+            <InfoCircledIcon />
             Fill all necessary information to generate Email QR code
           </p>
           <div className="space-y-2">
@@ -95,9 +97,9 @@ const GenerateEmailToQR: React.FC<GenerateEmailToQRProps> = ({ id, className, ..
               value={generateEmailContent()}
               size={250}
             />
-          ) : <p className='text-sm'>Please fill in all fields.</p>}
+          ) : <MissingQRData />}
         </section>
-      </article>
+      </article >
     </>
   );
 };
